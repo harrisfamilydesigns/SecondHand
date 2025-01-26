@@ -1,8 +1,13 @@
 import React, { useState } from 'react';
-import { View, Alert } from 'react-native';
-import { Input, Button } from '@rneui/themed';
+import { Alert } from 'react-native';
 
 import { supabase } from '../lib/supabase';
+import { Input, InputField } from './ui/input';
+import { FormControl } from './ui/form-control';
+import { VStack } from './ui/vstack';
+import { Heading } from './ui/heading';
+import { Text } from './ui/text';
+import { Button, ButtonText } from './ui/button';
 
 export default function Auth() {
   const [email, setEmail] = useState('');
@@ -36,43 +41,35 @@ export default function Auth() {
   }
 
   return (
-    <View className="flex-1 flex flex-col justify-center">
-      <View className="bg-green-100">
-        <Input
-          placeholder="Email"
-          leftIcon={{ type: 'font-awesome', name: 'envelope', size: 20 }}
-          value={email}
-          onChangeText={(text) => setEmail(text)}
-          autoCapitalize="none"
-          keyboardType="email-address"
-        />
-      </View>
-      <View className="mb-4">
-        <Input
-          placeholder="Password"
-          leftIcon={{ type: 'font-awesome', name: 'lock', size: 20 }}
-          value={password}
-          onChangeText={(text) => setPassword(text)}
-          secureTextEntry={true}
-          autoCapitalize="none"
-        />
-      </View>
-      <View className="mt-5 mb-3">
+    <FormControl className="p-4 border rounded-lg border-outline-300">
+      <VStack space="xl">
+        <Heading className="text-typography-900">Login</Heading>
+        <VStack space="xs">
+          <Text className="text-typography-500">Email</Text>
+          <Input className="min-w-[250px]">
+            <InputField type="text" value={email} onChangeText={(text) => setEmail(text)} />
+          </Input>
+        </VStack>
+        <VStack space="xs">
+          <Text className="text-typography-500">Password</Text>
+          <Input className="text-center">
+            <InputField type="password" value={password} onChangeText={(text) => setPassword(text)} />
+          </Input>
+        </VStack>
         <Button
-          title="Sign In"
-          loading={loading}
-          containerStyle={{ borderRadius: 8 }}
+          className="w-full"
           onPress={signInWithEmail}
-        />
-      </View>
-      <View>
+        >
+          <ButtonText className="text-typography-0">Sign In</ButtonText>
+        </Button>
+
         <Button
-          title="Sign Up"
-          loading={loading}
-          containerStyle={{ borderRadius: 8 }}
+          className="w-full"
           onPress={signUpWithEmail}
-        />
-      </View>
-    </View>
+        >
+          <ButtonText className="text-typography-0">Sign Up</ButtonText>
+        </Button>
+      </VStack>
+    </FormControl>
   );
 }
