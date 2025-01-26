@@ -1,9 +1,27 @@
+import { useState, useEffect } from 'react';
+import { supabase } from '../../../lib/supabase'
+import Auth from '../../../components/Auth'
+import { Session } from '@supabase/supabase-js'
 import { View, Text } from 'react-native';
 
 export default function Home() {
+  const [session, setSession] = useState<Session | null>(null)
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session)
+    })
+
+    supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session)
+    })
+  }, [])
+
   return (
-    <View className="flex items-center justify-center flex-1">
+    <View className="flex flex-col h-full">
+      <Auth />
       <Text>Hello, world! my friend</Text>
+      {session && session.user && <Text>{session.user.id}</Text>}
     </View>
   );
 }
