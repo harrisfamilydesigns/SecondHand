@@ -59,6 +59,7 @@ export default function Auth() {
         <Button
           className="w-full"
           onPress={signInWithEmail}
+          disabled={loading}
         >
           <ButtonText className="text-typography-0">Sign In</ButtonText>
         </Button>
@@ -66,6 +67,7 @@ export default function Auth() {
         <Button
           className="w-full"
           onPress={signUpWithEmail}
+          disabled={loading}
         >
           <ButtonText className="text-typography-0">Sign Up</ButtonText>
         </Button>

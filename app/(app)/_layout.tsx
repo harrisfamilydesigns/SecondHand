@@ -1,0 +1,22 @@
+import { Box } from "@/components/ui/box";
+import { Text } from "@/components/ui/text";
+import { AuthContext } from "@/provider/AuthProvider";
+import { Redirect, Stack } from "expo-router";
+import { useContext } from "react";
+
+export default function AppLayout() {
+  const { user } = useContext(AuthContext);
+  const isLoading = user === null;
+
+  if (isLoading) {
+    return <Box className="flex items-center justify-center h-full">
+      <Text>Loading...</Text>
+    </Box>
+  }
+
+  if (!user) {
+    return <Redirect href='/(auth)' />
+  }
+
+  return <Stack screenOptions={{ headerShown: false }} />
+}
