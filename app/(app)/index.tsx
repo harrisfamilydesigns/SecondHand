@@ -1,29 +1,48 @@
-import { supabase } from '@/lib/supabase'
 import { Box } from '@/components/ui/box';
-import { Text } from '@/components/ui/text'
-import { Button, ButtonText } from '@/components/ui/button';
+import { Text } from '@/components/ui/text';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import { fetchGlutenFreeProducts, fetchSession, queryKeys } from '@/api';
-import { Avatar, AvatarBadge, AvatarFallbackText, AvatarImage } from '@/components/ui/avatar';
-import { Pressable } from 'react-native';
 import UserAvatar from '@/components/UserAvatar/UserAvatar';
+import { ActivityIndicator, FlatList } from 'react-native';
+import { useState } from 'react';
+import { CheckCircleIcon, CheckIcon } from '@/components/ui/icon';
 
 export default function Home() {
-  const { data: glutenFreeProducts, isLoading: isLoadingGfProducts, error: errorGfProducts } = useQuery({
+  const [offset, setOffset] = useState(0);
+
+  const {
+    data: glutenFreeProductsInfiniteData,
+    isLoading: isLoadingProducts,
+    error: errorProducts,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useInfiniteQuery({
     queryKey: [queryKeys.GLUTEN_FREE_PRODUCTS],
-    queryFn: fetchGlutenFreeProducts
+    queryFn: ({ pageParam = 0 }) => fetchGlutenFreeProducts({ limit: 50, offset: pageParam }),
+    initialPageParam: offset,
+    getNextPageParam: (lastPage, allPages) => {
+      // Determine if there are more pages to fetch
+      return lastPage.length < 50 ? null : allPages.length * 50;
+    },
   });
   const { data: session, isLoading: isLoadingSession, error: errorSession } = useQuery({
     queryKey: [queryKeys.SESSION],
     queryFn: fetchSession
   });
-  const userInitial = session && session.user && session.user.email && session.user.email[0];
-  const isLoading = isLoadingGfProducts || isLoadingSession;
+  const isLoading = isLoadingSession || isLoadingProducts;
 
   if (isLoading) {
     return <Text>Loading...</Text>;
   }
+
+  if (errorProducts || errorSession) {
+    return <Text>Error: {errorProducts?.message || errorSession?.message}</Text>;
+  }
+
+  // Combine all pages into a single list
+  const glutenFreeProducts = glutenFreeProductsInfiniteData?.pages.flat() || [];
 
   return (
     <SafeAreaView>
@@ -33,12 +52,26 @@ export default function Home() {
       </Box>
 
       <Box className="flex flex-col h-full">
-        <Text>Welcome to the home screen</Text>
-        {session && session.user && <Text>{session.user.id}</Text>}
-        {/* Logout */}
-        <Button onPress={() => supabase.auth.signOut()}>
-          <ButtonText>Logout</ButtonText>
-        </Button>
+        <Box className="flex flex-col py-4 mb-20">
+          <FlatList
+            scrollsToTop
+            data={glutenFreeProducts}
+            keyExtractor={(item) => item.id.toString()}
+            renderItem={({ item }) => (
+              <Box key={item.id} className="border-b border-outline-300 p-4">
+                <Text bold size='xl'>{item.name}</Text>
+                <Text className="mt-2 color-gray-400">{item.brand_name}</Text>
+              </Box>
+            )}
+            onEndReached={() => {
+              if (hasNextPage && !isFetchingNextPage) {
+                fetchNextPage();
+              }
+            }}
+            onEndReachedThreshold={0.5}
+            ListFooterComponent={isFetchingNextPage ? <ActivityIndicator /> : null}
+          />
+        </Box>
       </Box>
     </SafeAreaView>
   );
