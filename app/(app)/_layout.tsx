@@ -1,6 +1,6 @@
 import { Box } from "@/components/ui/box";
 import { Text } from "@/components/ui/text";
-import { AuthContext } from "@/provider/AuthProvider";
+import { AuthContext } from "@/providers/AuthProvider";
 import { Redirect, Stack } from "expo-router";
 import { useContext } from "react";
 
