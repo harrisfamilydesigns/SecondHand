@@ -42,33 +42,31 @@ export default function Home() {
   const glutenFreeProducts = productsData?.pages.flat() || [];
 
   return (
-    <Fragment>
+    <SafeAreaView edges={['bottom']} className="flex flex-col flex-1">
       <Box className="mt-3 mx-3">
         <SearchInput value={searchValue} onChangeText={setSearchValue} />
       </Box>
 
-      <Box className="flex flex-col h-full">
-        <Box className="flex flex-col mb-20">
-          <FlatList
-            scrollsToTop
-            data={glutenFreeProducts}
-            keyExtractor={(item) => item.id.toString()}
-            renderItem={({ item }) => (
-              <Box key={item.id} className="border-b border-outline-300 p-4">
-                <Text bold size='xl'>{item.name}</Text>
-                <Text className="mt-2 color-gray-400">{item.brand_name}</Text>
-              </Box>
-            )}
-            onEndReached={() => {
-              if (hasNextPage && !isFetchingNextPage) {
-                fetchNextPage();
-              }
-            }}
-            onEndReachedThreshold={0.5}
-            ListFooterComponent={isFetchingNextPage ? <ActivityIndicator /> : null}
-          />
-        </Box>
+      <Box className="flex-1">
+        <FlatList
+          scrollsToTop
+          data={glutenFreeProducts}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={({ item }) => (
+            <Box key={item.id} className="border-b border-outline-300 p-4">
+              <Text bold size='xl'>{item.name}</Text>
+              <Text className="mt-2 color-gray-400">{item.brand_name}</Text>
+            </Box>
+          )}
+          onEndReached={() => {
+            if (hasNextPage && !isFetchingNextPage) {
+              fetchNextPage();
+            }
+          }}
+          onEndReachedThreshold={0.5}
+          ListFooterComponent={isFetchingNextPage ? <ActivityIndicator /> : null}
+        />
       </Box>
-    </Fragment>
+    </SafeAreaView>
   );
 }
