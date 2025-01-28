@@ -3,6 +3,7 @@ import { Text } from "@/components/ui/text";
 import { AuthContext } from "@/providers/AuthProvider";
 import { Redirect, Stack } from "expo-router";
 import { useContext } from "react";
+import DashboardHeader from '@/components/DashboardHeader/DashboardHeader';
 
 export default function AppLayout() {
   const { user } = useContext(AuthContext);
@@ -18,5 +19,11 @@ export default function AppLayout() {
     return <Redirect href='/(auth)' />
   }
 
-  return <Stack screenOptions={{ headerShown: false }} />
+  return (
+    <Stack>
+      <Stack.Screen name="index" options={{
+        header: () => <DashboardHeader />
+      }}/>
+    </Stack>
+  );
 }

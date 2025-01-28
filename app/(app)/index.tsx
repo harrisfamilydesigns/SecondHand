@@ -5,54 +5,50 @@ import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import { fetchGlutenFreeProducts, fetchSession, queryKeys } from '@/api';
 import UserAvatar from '@/components/UserAvatar/UserAvatar';
 import { ActivityIndicator, FlatList } from 'react-native';
-import { useState } from 'react';
-import { CheckCircleIcon, CheckIcon } from '@/components/ui/icon';
+import SearchInput from '@/components/SearchInput/SearchInput';
+import { Fragment, useState } from 'react';
 
 export default function Home() {
-  const [offset, setOffset] = useState(0);
+  const [searchValue, setSearchValue] = useState('');
 
+  const perPage = 50;
   const {
-    data: glutenFreeProductsInfiniteData,
-    isLoading: isLoadingProducts,
-    error: errorProducts,
+    data: productsData,
+    isLoading: productsIsLoading,
+    error: productsError,
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
   } = useInfiniteQuery({
     queryKey: [queryKeys.GLUTEN_FREE_PRODUCTS],
-    queryFn: ({ pageParam = 0 }) => fetchGlutenFreeProducts({ limit: 50, offset: pageParam }),
-    initialPageParam: offset,
+    queryFn: ({ pageParam = 0 }) => fetchGlutenFreeProducts({ limit: perPage, offset: pageParam }),
+    initialPageParam: 0,
     getNextPageParam: (lastPage, allPages) => {
       // Determine if there are more pages to fetch
-      return lastPage.length < 50 ? null : allPages.length * 50;
+      return lastPage.length < perPage ? null : allPages.length * perPage;
     },
   });
-  const { data: session, isLoading: isLoadingSession, error: errorSession } = useQuery({
-    queryKey: [queryKeys.SESSION],
-    queryFn: fetchSession
-  });
-  const isLoading = isLoadingSession || isLoadingProducts;
+  const isLoading = productsIsLoading;
 
   if (isLoading) {
     return <Text>Loading...</Text>;
   }
 
-  if (errorProducts || errorSession) {
-    return <Text>Error: {errorProducts?.message || errorSession?.message}</Text>;
+  if (productsError) {
+    return <Text>Error: {productsError?.message}</Text>;
   }
 
   // Combine all pages into a single list
-  const glutenFreeProducts = glutenFreeProductsInfiniteData?.pages.flat() || [];
+  const glutenFreeProducts = productsData?.pages.flat() || [];
 
   return (
-    <SafeAreaView>
-
-      <Box className="flex items-end">
-        <UserAvatar />
+    <Fragment>
+      <Box className="mt-3 mx-3">
+        <SearchInput value={searchValue} onChangeText={setSearchValue} />
       </Box>
 
       <Box className="flex flex-col h-full">
-        <Box className="flex flex-col py-4 mb-20">
+        <Box className="flex flex-col mb-20">
           <FlatList
             scrollsToTop
             data={glutenFreeProducts}
@@ -73,6 +69,6 @@ export default function Home() {
           />
         </Box>
       </Box>
-    </SafeAreaView>
+    </Fragment>
   );
 }

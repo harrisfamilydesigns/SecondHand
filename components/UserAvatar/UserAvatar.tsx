@@ -1,12 +1,12 @@
 import { fetchSession, queryKeys } from '@/api';
 import { Avatar, AvatarBadge, AvatarFallbackText, AvatarImage } from '@/components/ui/avatar';
-import { Actionsheet, ActionsheetBackdrop, ActionsheetContent, ActionsheetDragIndicator, ActionsheetDragIndicatorWrapper, ActionsheetItem, ActionsheetItemText } from '@/components/ui/actionsheet';
+import { Actionsheet, ActionsheetBackdrop, ActionsheetContent, ActionsheetDragIndicator, ActionsheetDragIndicatorWrapper, ActionsheetItem } from '@/components/ui/actionsheet';
 import { Text } from '@/components/ui/text';
 import { useQuery } from '@tanstack/react-query';
 import { Fragment, useState } from 'react';
 import { Pressable } from 'react-native';
 import { supabase } from '@/lib/supabase';
-import { ArrowRightIcon, Icon, RemoveIcon } from '@/components/ui/icon';
+import { ArrowRightIcon, Icon } from '@/components/ui/icon';
 import { Box } from '../ui/box';
 
 export default function UserAvatar() {
@@ -29,8 +29,9 @@ export default function UserAvatar() {
 
   return (
     <Fragment>
-      <Pressable onPress={() => setActionSheetVisible(true)}>
-        <Avatar size="md" className="mr-3">
+      <Pressable
+        onPress={() => setActionSheetVisible(true)}>
+        <Avatar size="md">
           <AvatarFallbackText>
             {userInitial}
           </AvatarFallbackText>
