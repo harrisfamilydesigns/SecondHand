@@ -6,7 +6,7 @@ import { Text } from "@/components/ui/text";
 import { VStack } from "@/components/ui/vstack";
 import { useState } from "react";
 import { Alert, Pressable } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { SafeAreaView } from "@/components/SafeAreaView";
 import { supabase } from "@/lib/supabase";
 import { router } from "expo-router";
 import { ArrowLeftIcon, Icon } from "@/components/ui/icon";

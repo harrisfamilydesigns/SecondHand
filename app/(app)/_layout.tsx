@@ -10,9 +10,11 @@ export default function AppLayout() {
   const isLoading = user === null;
 
   if (isLoading) {
-    return <Box className="flex items-center justify-center h-full">
-      <Text>Loading...</Text>
-    </Box>
+    return (
+      <Box className="flex items-center justify-center h-full">
+        <Text>Loading...</Text>
+      </Box>
+    )
   }
 
   if (!user) {
@@ -21,9 +23,12 @@ export default function AppLayout() {
 
   return (
     <Stack>
-      <Stack.Screen name="index" options={{
-        header: () => <DashboardHeader />
-      }}/>
+      <Stack.Screen
+        name="index"
+        options={{
+          header: () => <DashboardHeader />
+        }}
+      />
     </Stack>
   );
 }

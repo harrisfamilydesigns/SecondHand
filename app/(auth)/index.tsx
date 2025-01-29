@@ -9,7 +9,7 @@ import { Heading } from '@/components/ui/heading';
 import { Text } from '@/components/ui/text';
 import { Button, ButtonText } from '@/components/ui/button';
 import { router } from 'expo-router';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView } from '@/components/SafeAreaView';
 import { EyeIcon, EyeOffIcon } from '@/components/ui/icon';
 import { Box } from '@/components/ui/box';
 import { Link } from '@/components/ui/link';

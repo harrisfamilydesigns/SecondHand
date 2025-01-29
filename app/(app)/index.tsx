@@ -1,6 +1,6 @@
 import { Box } from '@/components/ui/box';
 import { Text } from '@/components/ui/text';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView } from '@/components/SafeAreaView';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { fetchGlutenFreeProducts, queryKeys } from '@/api';
 import { ActivityIndicator, FlatList } from 'react-native';
@@ -10,19 +10,18 @@ import { Button, ButtonIcon, ButtonText } from '@/components/ui/button';
 import { ChevronRightIcon } from '@/components/ui/icon';
 import { Image } from '@/components/ui/image';
 
-const image_url = "https://images.unsplash.com/photo-1472214103451-9374bd1c798e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
 const categories = [
-  { id: 1, name: "Baked goods", image_url },
-  { id: 2, name: "Bread", image_url },
-  { id: 3, name: "Meat", image_url },
-  { id: 4, name: "Dairy", image_url },
-  { id: 5, name: "Fruits", image_url },
-  { id: 6, name: "Vegetables", image_url },
-  { id: 7, name: "Cereals", image_url },
-  { id: 8, name: "Pasta", image_url },
-  { id: 9, name: "Sauces", image_url },
-  { id: 10, name: "Snacks", image_url },
-  { id: 11, name: "Drinks", image_url },
+  { id: 1, name: "Baked goods", image_url: "https://images.unsplash.com/photo-1622941367239-8acd68fa946d?w=200&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fGJha2VkJTIwZ29vZHN8ZW58MHx8MHx8fDA%3D" },
+  { id: 2, name: "Bread", image_url: "https://plus.unsplash.com/premium_photo-1700399458190-eb33043ae7b2?w=200&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8Z2x1dGVuJTIwZnJlZSUyMGJyZWFkfGVufDB8fDB8fHww" },
+  { id: 3, name: "Meat", image_url: "https://images.unsplash.com/photo-1600891964092-4316c288032e?w=200&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8c3RlYWt8ZW58MHx8MHx8fDA%3D" },
+  { id: 4, name: "Dairy", image_url: "https://images.unsplash.com/photo-1550583724-b2692b85b150?w=200&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8ZGFpcnl8ZW58MHx8MHx8fDA%3D" },
+  { id: 5, name: "Fruits", image_url: "https://images.unsplash.com/photo-1519996529931-28324d5a630e?w=200&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8ZnJ1aXRzfGVufDB8fDB8fHww" },
+  { id: 6, name: "Vegetables", image_url: "https://images.unsplash.com/photo-1597362925123-77861d3fbac7?w=200&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8dmVnZXRhYmxlc3xlbnwwfHwwfHx8MA%3D%3D" },
+  { id: 7, name: "Cereals", image_url: "https://plus.unsplash.com/premium_photo-1675237626442-cb1af9f49a92?w=200&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8Y2VyZWFsc3xlbnwwfHwwfHx8MA%3D%3D" },
+  { id: 8, name: "Pasta", image_url: "https://plus.unsplash.com/premium_photo-1726862844513-26b69cf51a78?w=200&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTN8fGdsdXRlbiUyMGZyZWUlMjBwYXN0YXxlbnwwfHwwfHx8MA%3D%3D" },
+  { id: 9, name: "Sauces", image_url: "https://images.unsplash.com/photo-1563599175592-c58dc214deff?w=200&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8c2F1Y2V8ZW58MHx8MHx8fDA%3D" },
+  { id: 10, name: "Snacks", image_url: "https://images.unsplash.com/photo-1543158181-1274e5362710?w=200&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fHNuYWNrc3xlbnwwfHwwfHx8MA%3D%3D" },
+  { id: 11, name: "Beverage", image_url: "https://images.unsplash.com/photo-1589948100953-963e39185fd6?w=200&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTF8fGJldmVyYWdlc3xlbnwwfHwwfHx8MA%3D%3D" },
 ];
 
 export default function Home() {
@@ -72,17 +71,18 @@ export default function Home() {
 
   return (
     <SafeAreaView edges={['bottom']} className="flex flex-col flex-1">
+
       {/* Search for glutenFreeProducts */}
-      <Box className="mt-5 mx-3">
+      <Box className="m-3">
         <SearchInput value={searchValue} onChangeText={setSearchValue} />
       </Box>
 
       {/* categories horizontal scrolling list */}
-      <Box className="mt-8 flex flex-row items-center justify-between mx-3">
+      <Box className="my-3 flex flex-row items-center justify-between mx-3">
         <Text bold size='xl'>
           Categories
         </Text>
-        <Button variant='link' size="sm" className="ml-2">
+        <Button variant='link' size="sm" className="gap-1">
           <ButtonText className="bold text-gray-400">See all</ButtonText>
           <ButtonIcon as={ChevronRightIcon} />
         </Button>
@@ -94,9 +94,9 @@ export default function Home() {
           data={categories}
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => (
-            <Box key={item.id.toString()} className="p-4 h-40 w-40 bg-gray-200 rounded-lg ml-3">
-              <Text bold size='xl'>{item.name}</Text>
-              <Box>
+            <Box key={item.id.toString()} className="p-4 h-40 w-40 bg-background-100 rounded-lg ml-3">
+              <Text bold size='md'>{item.name}</Text>
+              <Box className="mt-2 rounded-xl overflow-hidden">
                 <Image source={{ uri: item.image_url }} className="w-full h-24" />
               </Box>
             </Box>
