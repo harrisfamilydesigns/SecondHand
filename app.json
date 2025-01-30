@@ -13,7 +13,8 @@
       "bundleIdentifier": "com.harrisfamilydesigns.secondhand",
       "runtimeVersion": {
         "policy": "appVersion"
-      }
+      },
+      "userInterfaceStyle": "automatic"
     },
     "android": {
       "adaptiveIcon": {
@@ -21,7 +22,8 @@
         "backgroundColor": "#ffffff"
       },
       "package": "com.harrisfamilydesigns.secondhand",
-      "runtimeVersion": "1.0.0"
+      "runtimeVersion": "1.0.0",
+      "userInterfaceStyle": "automatic"
     },
     "web": {
       "bundler": "metro",

@@ -3,7 +3,7 @@ import { Text } from "@/components/ui/text";
 import { AuthContext } from "@/providers/AuthProvider";
 import { Redirect, Stack } from "expo-router";
 import { useContext } from "react";
-import DashboardHeader from '@/components/DashboardHeader/DashboardHeader';
+import DashboardHeader from '@/components/DashboardHeader';
 
 export default function AppLayout() {
   const { user } = useContext(AuthContext);
