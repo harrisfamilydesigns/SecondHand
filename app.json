@@ -9,13 +9,19 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.harrisfamilydesigns.secondhand",
+      "runtimeVersion": {
+        "policy": "appVersion"
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.harrisfamilydesigns.secondhand",
+      "runtimeVersion": "1.0.0"
     },
     "web": {
       "bundler": "metro",
@@ -42,9 +48,12 @@
         "origin": false
       },
       "eas": {
-        "projectId": "f4c177f3-44f3-4c94-a0a0-a79a801240ac"
+        "projectId": "52ad5605-9b0c-4bbb-8b74-ae61f7e550e2"
       }
     },
-    "owner": "harrisfamilydesigns"
+    "owner": "harrisfamilydesigns",
+    "updates": {
+      "url": "https://u.expo.dev/52ad5605-9b0c-4bbb-8b74-ae61f7e550e2"
+    }
   }
 }
