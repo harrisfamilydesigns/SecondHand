@@ -97,7 +97,7 @@ export default function Home() {
             <Box key={item.id.toString()} className="p-4 h-40 w-40 bg-background-100 rounded-lg ml-3">
               <Text bold size='md'>{item.name}</Text>
               <Box className="mt-2 rounded-xl overflow-hidden">
-                <Image source={{ uri: item.image_url }} className="w-full h-24" />
+                <Image source={{ uri: item.image_url }} alt="some_img" className="w-full h-24" />
               </Box>
             </Box>
           )}

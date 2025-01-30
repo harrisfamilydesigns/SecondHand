@@ -1,4 +1,4 @@
-import React from 'react';
+import { useRef, ReactNode } from 'react';
 import { config } from './config';
 import { ColorSchemeName, useColorScheme, View, ViewProps } from 'react-native';
 import { OverlayProvider } from '@gluestack-ui/overlay';
@@ -22,12 +22,23 @@ export function GluestackUIProvider({
   ...props
 }: {
   mode?: 'light' | 'dark' | 'system';
-  children?: React.ReactNode;
+  children?: ReactNode;
   style?: ViewProps['style'];
 }) {
-  const colorScheme = useColorScheme();
+  const prevColorScheme = useRef<null | ColorSchemeName>(null);
+  const prevColorSchemeSetAt = useRef<number | null>(null);
 
-  const colorSchemeName = getColorSchemeName(colorScheme, mode);
+  const colorScheme = useColorScheme();
+  let nonNullRNColorScheme;
+  if (colorScheme === null && prevColorScheme.current !== null && prevColorSchemeSetAt.current !== null && Date.now() - prevColorSchemeSetAt.current < 1000) {
+    nonNullRNColorScheme = prevColorScheme.current;
+  } else {
+    nonNullRNColorScheme = colorScheme;
+    prevColorScheme.current = colorScheme;
+    prevColorSchemeSetAt.current = Date.now();
+  }
+
+  const colorSchemeName = getColorSchemeName(nonNullRNColorScheme, mode);
 
   colorSchemeNW.set(mode);
 
