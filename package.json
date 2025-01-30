@@ -1,5 +1,5 @@
 {
-  "name": "caresync",
+  "name": "secondhand",
   "main": "expo-router/entry",
   "version": "1.0.0",
   "scripts": {
@@ -11,7 +11,7 @@
     "test": "jest --watchAll",
     "lint": "expo lint",
     "gluestack-add": "npx gluestack-ui add",
-    "generate-types": "mkdir -p types && npx supabase projects list | awk '/CareSync/ {print $6}' | xargs -I {} npx supabase gen types typescript --project-id {} > types/supabase.ts"
+    "generate-types": "mkdir -p types && npx supabase projects list | awk '/SecondHand/ {print $6}' | xargs -I {} npx supabase gen types typescript --project-id {} > types/supabase.ts"
   },
   "jest": {
     "preset": "jest-expo"

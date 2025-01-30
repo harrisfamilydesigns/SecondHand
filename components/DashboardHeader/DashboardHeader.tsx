@@ -10,7 +10,7 @@ export default function DashboardHeader() {
       className="bg-background-0 flex-0"
     >
       <Box className="m-3 flex flex-row items-center justify-between">
-        <Text size="3xl" bold>CareSync</Text>
+        <Text size="3xl" bold>SecondHand</Text>
         <UserAvatar/>
       </Box>
     </SafeAreaView>
